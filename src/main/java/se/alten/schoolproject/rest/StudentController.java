@@ -2,14 +2,17 @@ package se.alten.schoolproject.rest;
 
 import lombok.NoArgsConstructor;
 import se.alten.schoolproject.dao.SchoolAccessLocal;
+import se.alten.schoolproject.entity.Student;
+import se.alten.schoolproject.model.StudentModel;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.persistence.PersistenceException;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 @Stateless
 @NoArgsConstructor
@@ -21,14 +24,33 @@ public class StudentController {
 
     @GET
     @Produces({"application/json"})
-    public Response test() {
-        System.out.println("At Rest");
+    public Response showStudents() {
         try {
-           // sal.test();
-            String t = "Hej Hej";
-            return Response.ok(t).build();
-        } catch ( Exception pe ) {
+            List<Student> students = sal.listAllStudents();
+            return Response.ok(students).build();
+        } catch ( Exception e ) {
             return Response.status(Response.Status.CONFLICT).build();
+        }
+    }
+
+    @POST
+    @Path("/add")
+    @Produces({"application/json"})
+    /**
+     * JavaDoc
+     */
+    public Response addStudent(String studentModel) {
+        try {
+            String answer = sal.addStudent(studentModel);
+            if ( answer.equals("OK")) {
+                return Response.ok(answer).build();
+            } else if ( answer.equals("Not OK")) {
+                return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+            } else {
+                return Response.status(Response.Status.EXPECTATION_FAILED).build();
+            }
+        } catch ( Exception e ) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }
 }
