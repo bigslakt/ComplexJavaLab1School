@@ -29,7 +29,7 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
         boolean checkForEmptyVariables = Stream.of(studentToAdd.getForename(), studentToAdd.getLastname(), studentToAdd.getEmail()).anyMatch(String::isBlank);
 
         if (checkForEmptyVariables) {
-            studentToAdd.setForename("");
+            studentToAdd.setForename("empty");
             return studentModel.toModel(studentToAdd);
         } else {
             studentTransactionAccess.addStudent(studentToAdd);

@@ -27,10 +27,10 @@ public class StudentTransaction implements StudentTransactionAccess{
     public Student addStudent(Student studentToAdd) {
         try {
             entityManager.persist(studentToAdd);
-            //entityManager.flush();
+            entityManager.flush();
             return studentToAdd;
         } catch ( PersistenceException pe ) {
-            studentToAdd.setEmail("Email already exist!");
+            studentToAdd.setForename("duplicate");
             return studentToAdd;
         }
     }
