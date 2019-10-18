@@ -7,11 +7,13 @@ import se.alten.schoolproject.model.StudentModel;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.persistence.PersistenceException;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
+import java.util.Arrays;
 import java.util.List;
 
 @Stateless
@@ -26,7 +28,7 @@ public class StudentController {
     @Produces({"application/json"})
     public Response showStudents() {
         try {
-            List<Student> students = sal.listAllStudents();
+            List students = sal.listAllStudents();
             return Response.ok(students).build();
         } catch ( Exception e ) {
             return Response.status(Response.Status.CONFLICT).build();
@@ -41,15 +43,23 @@ public class StudentController {
      */
     public Response addStudent(String studentModel) {
         try {
-            String answer = sal.addStudent(studentModel);
-            if ( answer.equals("OK")) {
-                return Response.ok(answer).build();
-            } else if ( answer.equals("Not OK")) {
-                return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+
+            StudentModel answer = sal.addStudent(studentModel);
+
+            System.out.println("CONTRRRRROLLLLLLLLLLLLLLEEEEEEEEEEERRRRR::::::   " + answer.toString());
+
+            if ( answer.getForename().isBlank()) {
+                System.out.println("Blank");
+                return Response.status(Response.Status.NOT_ACCEPTABLE).entity("{\"Fill in all details please\"}").build();
+            }
+            if ( answer.getEmail().contentEquals("email not present")) {
+                System.out.println("In here");
+                return Response.status(Response.Status.EXPECTATION_FAILED).entity("{\"Email already registered!\"}").build();
             } else {
-                return Response.status(Response.Status.EXPECTATION_FAILED).build();
+                return Response.ok(answer).build();
             }
         } catch ( Exception e ) {
+            System.out.println("In Exception");
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }

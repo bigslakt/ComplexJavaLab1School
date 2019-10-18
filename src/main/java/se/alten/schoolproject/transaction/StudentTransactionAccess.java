@@ -7,6 +7,6 @@ import java.util.List;
 
 @Local
 public interface StudentTransactionAccess {
-    List<Student> listAllStudents();
-    String addStudent(Student studentToAdd);
+    List listAllStudents();
+    Student addStudent(Student studentToAdd);
 }

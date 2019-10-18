@@ -18,20 +18,20 @@ public class StudentTransaction implements StudentTransactionAccess{
     private EntityManager entityManager;
 
     @Override
-    public List<Student> listAllStudents() {
+    public List listAllStudents() {
         Query query = entityManager.createQuery("SELECT s from Student s");
-        List<Student> students = query.getResultList();
-        return students;
+        return query.getResultList();
     }
 
     @Override
-    public String addStudent(Student studentToAdd) {
+    public Student addStudent(Student studentToAdd) {
         try {
             entityManager.persist(studentToAdd);
-            entityManager.flush();
+            //entityManager.flush();
+            return studentToAdd;
         } catch ( PersistenceException pe ) {
-            return "Email exists";
+            studentToAdd.setEmail("Email already exist!");
+            return studentToAdd;
         }
-        return "OK";
     }
 }

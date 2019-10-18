@@ -10,7 +10,7 @@ import java.util.List;
 @Local
 public interface SchoolAccessLocal {
 
-    List<Student> listAllStudents() throws Exception;
+    List listAllStudents() throws Exception;
 
-    String addStudent(String studentModel);
+    StudentModel addStudent(String studentModel);
 }
