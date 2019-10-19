@@ -46,4 +46,10 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
     public void updateStudent(String forename, String lastname, String email) {
         studentTransactionAccess.updateStudent(forename, lastname, email);
     }
+
+    @Override
+    public void updateStudentPartial(String studentModel) {
+        Student studentToUpdate = student.toEntity(studentModel);
+        studentTransactionAccess.updateStudentPartial(studentToUpdate);
+    }
 }

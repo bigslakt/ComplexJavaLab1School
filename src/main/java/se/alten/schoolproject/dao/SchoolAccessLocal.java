@@ -15,4 +15,6 @@ public interface SchoolAccessLocal {
     void removeStudent(String student);
 
     void updateStudent(String forename, String lastname, String email);
+
+    void updateStudentPartial(String studentModel);
 }

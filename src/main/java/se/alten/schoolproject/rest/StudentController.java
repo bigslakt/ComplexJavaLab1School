@@ -71,4 +71,9 @@ public class StudentController {
     public void updateStudent( @QueryParam("forename") String forename, @QueryParam("lastname") String lastname, @QueryParam("email") String email) {
         sal.updateStudent(forename, lastname, email);
     }
+
+    @PATCH
+    public void updatePartialAStudent(String studentModel) {
+        sal.updateStudentPartial(studentModel);
+    }
 }

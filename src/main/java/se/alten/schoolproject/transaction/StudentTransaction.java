@@ -55,4 +55,15 @@ public class StudentTransaction implements StudentTransactionAccess{
                    .setParameter("email", email)
                    .executeUpdate();
     }
+
+    @Override
+    public void updateStudentPartial(Student student) {
+        Student studentFound = (Student)entityManager.createQuery("SELECT s FROM Student s WHERE s.email = :email")
+                .setParameter("email", student.getEmail()).getSingleResult();
+
+        Query query = entityManager.createQuery("UPDATE Student SET forename = :studentForename WHERE email = :email");
+        query.setParameter("studentForename", student.getForename())
+                .setParameter("email", studentFound.getEmail())
+                .executeUpdate();
+    }
 }
