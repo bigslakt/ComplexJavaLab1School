@@ -13,4 +13,6 @@ public interface SchoolAccessLocal {
     List listAllStudents() throws Exception;
 
     StudentModel addStudent(String studentModel);
+
+    void removeStudent(String student);
 }

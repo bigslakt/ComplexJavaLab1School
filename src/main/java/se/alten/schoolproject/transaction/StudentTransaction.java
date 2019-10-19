@@ -34,4 +34,16 @@ public class StudentTransaction implements StudentTransactionAccess{
             return studentToAdd;
         }
     }
+
+    @Override
+    public void removeStudent(String student) {
+        //JPQL Query
+        Query query = entityManager.createQuery("DELETE FROM Student s WHERE s.email = :email");
+
+        //Native Query
+        //Query query = entityManager.createNativeQuery("DELETE FROM student WHERE email = :email", Student.class);
+
+        query.setParameter("email", student)
+             .executeUpdate();
+    }
 }

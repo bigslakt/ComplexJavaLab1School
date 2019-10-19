@@ -36,4 +36,9 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
             return studentModel.toModel(studentToAdd);
         }
     }
+
+    @Override
+    public void removeStudent(String studentEmail) {
+        studentTransactionAccess.removeStudent(studentEmail);
+    }
 }

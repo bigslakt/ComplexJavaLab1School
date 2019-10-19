@@ -8,10 +8,7 @@ import se.alten.schoolproject.model.StudentModel;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.PersistenceException;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.util.Arrays;
 import java.util.List;
@@ -54,6 +51,17 @@ public class StudentController {
                 default:
                     return Response.ok(answer).build();
             }
+        } catch ( Exception e ) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+    }
+
+    @DELETE
+    @Path("{email}")
+    public Response deleteUser( @PathParam("email") String email) {
+        try {
+            sal.removeStudent(email);
+            return Response.ok().build();
         } catch ( Exception e ) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }

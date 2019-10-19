@@ -9,4 +9,5 @@ import java.util.List;
 public interface StudentTransactionAccess {
     List listAllStudents();
     Student addStudent(Student studentToAdd);
+    void removeStudent(String student);
 }
