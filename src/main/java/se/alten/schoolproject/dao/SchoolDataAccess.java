@@ -41,4 +41,9 @@ public class SchoolDataAccess implements SchoolAccessLocal, SchoolAccessRemote {
     public void removeStudent(String studentEmail) {
         studentTransactionAccess.removeStudent(studentEmail);
     }
+
+    @Override
+    public void updateStudent(String forename, String lastname, String email) {
+        studentTransactionAccess.updateStudent(forename, lastname, email);
+    }
 }

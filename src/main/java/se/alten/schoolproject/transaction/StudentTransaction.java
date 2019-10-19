@@ -46,4 +46,13 @@ public class StudentTransaction implements StudentTransactionAccess{
         query.setParameter("email", student)
              .executeUpdate();
     }
+
+    @Override
+    public void updateStudent(String forename, String lastname, String email) {
+        Query updateQuery = entityManager.createNativeQuery("UPDATE student SET forename = :forename, lastname = :lastname WHERE email = :email", Student.class);
+        updateQuery.setParameter("forename", forename)
+                   .setParameter("lastname", lastname)
+                   .setParameter("email", email)
+                   .executeUpdate();
+    }
 }

@@ -66,4 +66,9 @@ public class StudentController {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }
+
+    @PUT
+    public void updateStudent( @QueryParam("forename") String forename, @QueryParam("lastname") String lastname, @QueryParam("email") String email) {
+        sal.updateStudent(forename, lastname, email);
+    }
 }
