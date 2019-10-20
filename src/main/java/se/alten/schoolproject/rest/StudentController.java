@@ -2,15 +2,13 @@ package se.alten.schoolproject.rest;
 
 import lombok.NoArgsConstructor;
 import se.alten.schoolproject.dao.SchoolAccessLocal;
-import se.alten.schoolproject.entity.Student;
 import se.alten.schoolproject.model.StudentModel;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.persistence.PersistenceException;
 import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.Arrays;
 import java.util.List;
 
 @Stateless
@@ -34,6 +32,7 @@ public class StudentController {
 
     @POST
     @Path("/add")
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces({"application/json"})
     /**
      * JavaDoc
