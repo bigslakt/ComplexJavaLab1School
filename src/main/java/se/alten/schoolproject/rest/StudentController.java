@@ -20,7 +20,7 @@ public class StudentController {
     private SchoolAccessLocal sal;
 
     @GET
-    @Produces({"application/json"})
+    @Produces({"application/JSON"})
     public Response showStudents() {
         try {
             List students = sal.listAllStudents();
@@ -33,7 +33,7 @@ public class StudentController {
     @POST
     @Path("/add")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces({"application/json"})
+    @Produces({"application/JSON"})
     /**
      * JavaDoc
      */
