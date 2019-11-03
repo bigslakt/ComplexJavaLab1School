@@ -1,4 +1,4 @@
-#module add --name=com.mysql --resources=~/mysql-connector-java-8.0.12.jar --dependencies=javax.api,javax.transaction.api
+module add --name=com.mysql --resources=~/mysql-connector-java-8.0.12.jar --dependencies=javax.api,javax.transaction.api
 /subsystem=datasources/jdbc-driver=mysql:add(driver-name="mysql",driver-module-name="com.mysql",driver-class-name=com.mysql.cj.jdbc.Driver)
 data-source add --jndi-name=java:/school --name=school \
 --connection-url="jdbc:mysql://localhost:3306/school?allowPublicKeyRetrieval=true&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC" \
