@@ -1,7 +1,9 @@
 package se.alten.schoolproject.rest;
 
 import lombok.NoArgsConstructor;
+import mjson.Json;
 import se.alten.schoolproject.dao.SchoolAccessLocal;
+import se.alten.schoolproject.exception.StudentDontExistException;
 import se.alten.schoolproject.model.StudentModel;
 
 import javax.ejb.Stateless;
@@ -22,36 +24,70 @@ public class StudentController {
     @GET
     @Produces({"application/JSON"})
     public Response showStudents() {
+
         try {
             List students = sal.listAllStudents();
             return Response.ok(students).build();
         } catch ( Exception e ) {
-            return Response.status(Response.Status.CONFLICT).build();
+            return Response.status(Response.Status.CONFLICT).entity(e.getMessage()).build();
+        }
+    }
+
+    @GET
+    @Path("{email}")
+    @Produces({"application/JSON"})
+    public Response getStudentByEmail(@PathParam("email") String email) {
+
+        try {
+            StudentModel studentModelResponse = sal.getStudentByEmail(email);
+            return Response.ok(studentModelResponse).build();
+        }catch(StudentDontExistException ex) {
+            return Response.status(Response.Status.NOT_FOUND).entity(ex.getMessage()).build();
+        } catch ( Exception e ) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
+    }
+
+    @GET
+    @Path("/byName/{name}")
+    @Produces({"application/JSON"})
+    public Response getStudentByName(@PathParam("name") String name) {
+
+        try {
+            List studentsByNameList = sal.getStudentByName(name);
+            return Response.ok(studentsByNameList).build();
+        }catch(StudentDontExistException ex) {
+            return Response.status(Response.Status.NOT_FOUND).entity(ex.getMessage()).build();
+        } catch ( Exception e ) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
+    }
+
+    @GET
+    @Path("/byFullName")
+    @Produces({"application/JSON"})
+    public Response getStudentByFullName(@QueryParam("forename") String foreName, @QueryParam("lastname") String lastName) {
+
+        try {
+            List studentsByNameList = sal.getStudentByFullName(foreName, lastName);
+            return Response.ok(studentsByNameList).build();
+        }catch(StudentDontExistException ex) {
+            return Response.status(Response.Status.NOT_FOUND).entity(ex.getMessage()).build();
+        } catch ( Exception e ) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
     }
 
     @POST
-    @Path("/add")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces({"application/JSON"})
-    /**
-     * JavaDoc
-     */
     public Response addStudent(String studentModel) {
+
         try {
-
-            StudentModel answer = sal.addStudent(studentModel);
-
-            switch ( answer.getForename()) {
-                case "empty":
-                    return Response.status(Response.Status.NOT_ACCEPTABLE).entity("{\"Fill in all details please\"}").build();
-                case "duplicate":
-                    return Response.status(Response.Status.EXPECTATION_FAILED).entity("{\"Email already registered!\"}").build();
-                default:
-                    return Response.ok(answer).build();
-            }
-        } catch ( Exception e ) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
+            StudentModel studentModelResponse = sal.addStudent(studentModel);
+            return Response.status(Response.Status.CREATED).entity(studentModelResponse).build();
+        }catch ( Exception e ) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
     }
 
@@ -61,18 +97,41 @@ public class StudentController {
         try {
             sal.removeStudent(email);
             return Response.ok().build();
+        }catch(StudentDontExistException ex) {
+            return Response.status(Response.Status.NOT_FOUND).entity(ex.getMessage()).build();
         } catch ( Exception e ) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
     }
 
     @PUT
-    public void updateStudent( @QueryParam("forename") String forename, @QueryParam("lastname") String lastname, @QueryParam("email") String email) {
-        sal.updateStudent(forename, lastname, email);
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces({"application/JSON"})
+    @Path("{email}")
+    public Response updateStudent( @PathParam("email") String currentEmail, String studentModel) {
+
+        try{
+            StudentModel studentModelResponse = sal.updateStudent(currentEmail, studentModel);
+            return Response.ok(studentModelResponse).build();
+        }catch(StudentDontExistException ex) {
+            return Response.status(Response.Status.NOT_FOUND).entity(ex.getMessage()).build();
+        }catch(Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
     }
 
     @PATCH
-    public void updatePartialAStudent(String studentModel) {
-        sal.updateStudentPartial(studentModel);
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces({"application/JSON"})
+    @Path("{email}")
+    public Response updateStudentPartial(@PathParam("email") String currentEmail, String studentModel) {
+        try {
+            StudentModel studentModelResponse = sal.updateStudentPartial(currentEmail, studentModel);
+            return Response.ok(studentModelResponse).build();
+        }catch(StudentDontExistException ex) {
+            return Response.status(Response.Status.NOT_FOUND).entity(ex.getMessage()).build();
+        }catch(Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
     }
 }

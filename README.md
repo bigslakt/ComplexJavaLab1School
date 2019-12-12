@@ -24,6 +24,54 @@ Write `jboss-cli -c --file=school.cli`
 
 It should say outcome success. Write `jboss-cli -c --command=:reload` to restart the server.
 
+## Endpoints 
 
+* Get all students: <br> 
+    **GET** <br>
+    *http://localhost:8080/school/student* <br>
+    
+* Get student by name: <br>
+    **GET** <br>
+    *http://localhost:8080/school/student/byName/{name}* <br>
 
- 
+* Get student by full name: <br>
+    **GET** <br>
+    *http://localhost:8080/school/student/byFullName/?{forename={forename}&lastname={lastname}}* <br>
+
+* Get student by email: <br>
+    **GET** <br>
+    *http://localhost:8080/school/student/{email}* <br>
+    
+* Create new Student: <br>
+    **POST** <br>
+    *http://localhost:8080/school/student* <br>
+    Body: <br>
+            {
+            	"forename" : "{forename}",
+            	"lastname" : "{lastname}",
+            	"email"  : "{email}"
+            } <br>
+            
+* Update Student (can update email): <br>
+    **PUT** <br>
+    *http://localhost:8080/school/student/{email}* <br>
+    Body: <br>
+            {
+            	"forename" : "{forename}",
+            	"lastname" : "{lastname}",
+            	"email"  : "{email}"
+            } <br>
+            
+* Update Student partially (can't update email): <br>
+    **PATCH** <br>
+    *http://localhost:8080/school/student/{email}* <br>
+    Body: <br>
+            {
+                "forename" : "{forename}",
+                "lastname" : "{lastname}"
+            } <br>
+            ...or either one of forename/lastname <br>
+            
+* Remove Student: <br>
+    **DELETE** <br>
+    *http://localhost:8080/school/student/{email}* <br>
